@@ -65,6 +65,7 @@ export default class endScene extends Phaser.Scene {
   create() {
     //esto es para el score y el ranking
     guardarPartida(this.PuntosObtenidos);
+    
 
     //esto es parte del bloque de codigo del reproductor de Jamendo - funciona por el momento con nivel uno, menu y escena final
     CommunicatorMusic.removeAllListeners("change-music-state");
@@ -87,6 +88,7 @@ export default class endScene extends Phaser.Scene {
 
     //Nombre del jugador traido del localstore
     const nombreDelJugador = obtenerNombreDelGato();
+    
 
     this.add.image(400, 330, "fondoLuz").setScale(0.8);
     this.add.text(100, 150, nombreDelJugador + ' consigió ' + this.PuntosObtenidos + " puntos", {

@@ -99,7 +99,8 @@ export const updateMichiColorPhaser = (color) => {
 export const guardarPartida = async (score) => {
   const token = localStorage.getItem("token");
   const accesorio = localStorage.getItem("michi_accesorio") || null;
-
+  const body = { score }
+  if (accesorio) body.accesorio = accesorio
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/api/get_partida`,
     {
@@ -108,11 +109,12 @@ export const guardarPartida = async (score) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ score, accesorio }),
+      body: JSON.stringify(body),
     },
   );
   const data = await response.json();
   return data;
+  
 };
 
 export const getRanking = async () => {
@@ -138,4 +140,26 @@ export const guardarAccesorio = async (accesorio) => {
   );
   const data = await response.json();
   return data;
+};
+
+
+export const signinGoogle = async (user) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`,
+    {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-type": "application/json",
+      },
+    },
+  );
+  const data = await response.json();
+  if (!response.ok) {
+    return { error: data.msg || data.error || "Error al iniciar sesión" };
+  }
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("michi_color", data.michi_color)
+  localStorage.setItem("michi_name", data.michi_name);
+  return { success: true, data };
 };
