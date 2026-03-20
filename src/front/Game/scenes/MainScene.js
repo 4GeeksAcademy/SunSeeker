@@ -30,7 +30,7 @@ export default class MainScene extends Phaser.Scene {
     this.load.image("Menu", "img/MenuSFondo.png");
     this.load.image("ScoreFondo", "img/vacioLargo.png");
 
-   this.load.spritesheet("GatoNaranjaF", "img/GatoNaranja1.png", {
+    this.load.spritesheet("GatoNaranjaF", "img/GatoNaranja1.png", {
       frameWidth: 49,
       frameHeight: 31,
     });
@@ -38,10 +38,14 @@ export default class MainScene extends Phaser.Scene {
       frameWidth: 49,
       frameHeight: 31,
     });
-    this.load.spritesheet("GatoNaranjaSombrero", "img/GatoNaranjaSombrero.png", {
-      frameWidth: 49,
-      frameHeight: 31,
-    });
+    this.load.spritesheet(
+      "GatoNaranjaSombrero",
+      "img/GatoNaranjaSombrero.png",
+      {
+        frameWidth: 49,
+        frameHeight: 31,
+      },
+    );
     this.load.spritesheet("GatoBlanco", "img/GatoBlanco.png", {
       frameWidth: 89,
       frameHeight: 58,
@@ -209,12 +213,31 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.collider(this.Perrito, paredes);
     this.physics.add.overlap(this.Perrito, respawnDog, Respawn, null, this);
 
-   const colorMap = {
-      Naranja: 1, Blanco: 2, Negro: 3,
-      BlancoGafas: 4, NegroGafas: 5, NaranjaGafas: 6,
-      NaranjaSombrero: 7, BlancoSombrero: 8, NegroSombrero: 9,
+    //  const colorMap = {
+    //     Naranja: 1, Blanco: 2, Negro: 3,
+    //     BlancoGafas: 4, NegroGafas: 5, NaranjaGafas: 6,
+    //     NaranjaSombrero: 7, BlancoSombrero: 8, NegroSombrero: 9,
+    //   };
+    //   this.gatoColor = colorMap[localStorage.getItem("michi_color")] ?? 1;
+
+    const colorBase = localStorage.getItem("michi_color") || "Naranja";
+    const accesorioBase = localStorage.getItem("michi_accesorio") || "";
+    const claveCompleta = accesorioBase
+      ? `${colorBase}${accesorioBase}`
+      : colorBase;
+
+    const colorMap = {
+      Naranja: 1,
+      Blanco: 2,
+      Negro: 3,
+      BlancoGafas: 4,
+      NegroGafas: 5,
+      NaranjaGafas: 6,
+      NaranjaSombrero: 7,
+      BlancoSombrero: 8,
+      NegroSombrero: 9,
     };
-    this.gatoColor = colorMap[localStorage.getItem("michi_color")] ?? 1;
+    this.gatoColor = colorMap[claveCompleta] ?? 1;
 
     const texturaGato =
       this.gatoColor === 2
@@ -234,7 +257,7 @@ export default class MainScene extends Phaser.Scene {
                     : this.gatoColor === 9
                       ? "GatoNegroSombrero"
                       : "GatoNaranjaF";
- 
+
     const sufijo =
       this.gatoColor === 2
         ? "Blanco"
@@ -253,7 +276,7 @@ export default class MainScene extends Phaser.Scene {
                     : this.gatoColor === 9
                       ? "NegroSombrero"
                       : "Naranja";
- 
+
     const escala =
       this.gatoColor === 2
         ? 0.9

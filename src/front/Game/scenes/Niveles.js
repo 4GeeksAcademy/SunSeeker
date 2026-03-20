@@ -5,7 +5,7 @@ export default class Niveles extends Phaser.Scene {
     super("Niveles");
   }
 
-preload() {
+  preload() {
     this.load.baseURL = "./";
     this.load.image("fondoLuz", "img/fondoLuz.jpg");
     this.load.image("Nivel1", "img/Nivel1.png");
@@ -13,8 +13,7 @@ preload() {
     this.load.image("Nivel3", "img/Nivel3.png");
     this.load.image("FlechaAtras", "img/FlechaAtras.png");
 
-
-   this.load.spritesheet("GatoNaranjaF", "img/GatoNaranja1.png", {
+    this.load.spritesheet("GatoNaranjaF", "img/GatoNaranja1.png", {
       frameWidth: 49,
       frameHeight: 31,
     });
@@ -22,10 +21,14 @@ preload() {
       frameWidth: 49,
       frameHeight: 31,
     });
-    this.load.spritesheet("GatoNaranjaSombrero", "img/GatoNaranjaSombrero.png", {
-      frameWidth: 49,
-      frameHeight: 31,
-    });
+    this.load.spritesheet(
+      "GatoNaranjaSombrero",
+      "img/GatoNaranjaSombrero.png",
+      {
+        frameWidth: 49,
+        frameHeight: 31,
+      },
+    );
     this.load.spritesheet("GatoBlanco", "img/GatoBlanco.png", {
       frameWidth: 89,
       frameHeight: 58,
@@ -54,7 +57,6 @@ preload() {
       frameWidth: 251,
       frameHeight: 199,
     });
-   
   }
 
   create() {
@@ -85,13 +87,31 @@ preload() {
       this.GatoNar.anims.play("turn_" + sufijo, true);
     }
 
+    //   const colorMap = {
+    //   Naranja: 1, Blanco: 2, Negro: 3,
+    //   BlancoGafas: 4, NegroGafas: 5, NaranjaGafas: 6,
+    //   NaranjaSombrero: 7, BlancoSombrero: 8, NegroSombrero: 9,
+    // };
+    // this.gatoColor = colorMap[localStorage.getItem("michi_color")] ?? 1;
 
-      const colorMap = {
-      Naranja: 1, Blanco: 2, Negro: 3,
-      BlancoGafas: 4, NegroGafas: 5, NaranjaGafas: 6,
-      NaranjaSombrero: 7, BlancoSombrero: 8, NegroSombrero: 9,
+    const colorBase = localStorage.getItem("michi_color") || "Naranja";
+    const accesorioBase = localStorage.getItem("michi_accesorio") || "";
+    const claveCompleta = accesorioBase
+      ? `${colorBase}${accesorioBase}`
+      : colorBase;
+
+    const colorMap = {
+      Naranja: 1,
+      Blanco: 2,
+      Negro: 3,
+      BlancoGafas: 4,
+      NegroGafas: 5,
+      NaranjaGafas: 6,
+      NaranjaSombrero: 7,
+      BlancoSombrero: 8,
+      NegroSombrero: 9,
     };
-    this.gatoColor = colorMap[localStorage.getItem("michi_color")] ?? 1;
+    this.gatoColor = colorMap[claveCompleta] ?? 1;
 
     const texturaGato =
       this.gatoColor === 2
@@ -111,7 +131,7 @@ preload() {
                     : this.gatoColor === 9
                       ? "GatoNegroSombrero"
                       : "GatoNaranjaF";
- 
+
     const sufijo =
       this.gatoColor === 2
         ? "Blanco"
@@ -130,7 +150,7 @@ preload() {
                     : this.gatoColor === 9
                       ? "NegroSombrero"
                       : "Naranja";
- 
+
     const escala =
       this.gatoColor === 2
         ? 0.9
@@ -150,9 +170,8 @@ preload() {
                       ? 1.1
                       : 1.6;
 
-
     this.GatoNar = this.physics.add
-      .sprite(700, 600, texturaGato) 
+      .sprite(700, 600, texturaGato)
       .setScale(escala);
 
     // this.GatoNar = this.physics.add
@@ -166,7 +185,6 @@ preload() {
     this.GatoNar.setFlipX(false);
     this.GatoNar.anims.play("left_" + sufijo, true);
     this.physics.add.collider(GatoSentado, this.GatoNar, Sentar, null, this);
-
 
     //Opciones de niveles ////
     const Nivel1Iniciar = this.add.zone(265, 126, 350, 48);
@@ -195,7 +213,5 @@ preload() {
     // this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(Volver);
   }
 
-update() {}
-
-
+  update() {}
 }

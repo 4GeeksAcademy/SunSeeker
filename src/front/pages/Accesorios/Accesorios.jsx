@@ -57,7 +57,7 @@ export const Accesorios = () => {
     const [mostrarColores, setMostrarColores] = useState(false);
     const [guardado, setGuardado] = useState(false);
     const [mensaje, setMensaje] = useState();
-    
+
     const [accesorioEquipado, setAccesorioEquipado] = useState(() => {
         const saved = localStorage.getItem("michi_accesorio");
         return ACCESORIOS_VALIDOS.includes(saved) ? saved : null;
@@ -91,7 +91,7 @@ export const Accesorios = () => {
 
             dispatch({ type: "set_michi_color", payload: colorSeleccionado });
             dispatch({ type: "set_michi_accesorio", payload: accesorioEquipado });
-            localStorage.setItem("michi_color", clavePhaser);
+            localStorage.setItem("michi_color", colorSeleccionado);
             localStorage.setItem("michi_accesorio", accesorioEquipado || "");
 
             CommunicatorMusic.emit("cambiar_michi", {

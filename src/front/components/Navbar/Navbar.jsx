@@ -5,6 +5,7 @@ import { SignupModal } from "../SignupModal/SignupModal";
 import { SigninModal } from "../SigninModal/SigninModal";
 import useGlobalReducer from "../../hooks/useGlobalReducer";
 import { imagenAccesorios } from "../../../imagenAccesorios";
+import { CommunicatorMusic } from "../../Game/CommunicatorMusic";
 
 
 export const Navbar = () => {
@@ -19,7 +20,7 @@ export const Navbar = () => {
     const michiColor = COLORES_VALIDOS.includes(store.michiColor) ? store.michiColor : "Naranja";
     const michiAccesorio = ACCESORIOS_VALIDOS.includes(store.michiAccesorio) ? store.michiAccesorio : "ninguno";
     const fotoNavbar = imagenAccesorios[michiColor][michiAccesorio];
-    
+
     const openSignup = () => {
         setShowSignin(false);
         setShowSignup(true);
@@ -54,10 +55,23 @@ export const Navbar = () => {
             }
         };
         window.addEventListener("storage", handleStorageChange);
-        return() =>{
+        return () => {
             window.removeEventListener("storage", handleStorageChange)
         };
     }, [store.user, dispatch, navigate])
+
+    useEffect(() => {
+        const handleCambiarMichi = ({ color, accesorio }) => {
+            dispatch({ type: "set_michi_color", payload: color });
+            dispatch({ type: "set_michi_accesorio", payload: accesorio });
+        };
+
+        CommunicatorMusic.on("cambiar_michi", handleCambiarMichi);
+        return () => {
+            CommunicatorMusic.off("cambiar_michi", handleCambiarMichi);
+        };
+    }, [dispatch]);
+
     return (
         <nav>
             <div className="nav-home d-flex justify-content-between align-items-center container-fluid">

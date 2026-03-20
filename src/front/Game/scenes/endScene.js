@@ -20,7 +20,7 @@ export default class endScene extends Phaser.Scene {
     this.load.baseURL = "./";
     this.load.image("fondoLuz", "img/fondoLuz.jpg");
 
-   this.load.spritesheet("GatoNaranjaF", "img/GatoNaranja1.png", {
+    this.load.spritesheet("GatoNaranjaF", "img/GatoNaranja1.png", {
       frameWidth: 49,
       frameHeight: 31,
     });
@@ -28,10 +28,14 @@ export default class endScene extends Phaser.Scene {
       frameWidth: 49,
       frameHeight: 31,
     });
-    this.load.spritesheet("GatoNaranjaSombrero", "img/GatoNaranjaSombrero.png", {
-      frameWidth: 49,
-      frameHeight: 31,
-    });
+    this.load.spritesheet(
+      "GatoNaranjaSombrero",
+      "img/GatoNaranjaSombrero.png",
+      {
+        frameWidth: 49,
+        frameHeight: 31,
+      },
+    );
     this.load.spritesheet("GatoBlanco", "img/GatoBlanco.png", {
       frameWidth: 89,
       frameHeight: 58,
@@ -89,10 +93,15 @@ export default class endScene extends Phaser.Scene {
     const nombreDelJugador = obtenerNombreDelGato();
 
     this.add.image(400, 330, "fondoLuz").setScale(0.8);
-    this.add.text(100, 150, nombreDelJugador + ' consigió ' + this.PuntosObtenidos + " puntos", {
-      fontSize: "32px",
-      fill: "#fff",
-    });
+    this.add.text(
+      100,
+      150,
+      nombreDelJugador + " consigió " + this.PuntosObtenidos + " puntos",
+      {
+        fontSize: "32px",
+        fill: "#fff",
+      },
+    );
 
     var paredes = this.physics.add.staticGroup();
 
@@ -110,13 +119,31 @@ export default class endScene extends Phaser.Scene {
       this.GatoNar.anims.play("turn_" + sufijo, true);
     }
 
+    //    const colorMap = {
+    //   Naranja: 1, Blanco: 2, Negro: 3,
+    //   BlancoGafas: 4, NegroGafas: 5, NaranjaGafas: 6,
+    //   NaranjaSombrero: 7, BlancoSombrero: 8, NegroSombrero: 9,
+    // };
+    // this.gatoColor = colorMap[localStorage.getItem("michi_color")] ?? 1;
 
-       const colorMap = {
-      Naranja: 1, Blanco: 2, Negro: 3,
-      BlancoGafas: 4, NegroGafas: 5, NaranjaGafas: 6,
-      NaranjaSombrero: 7, BlancoSombrero: 8, NegroSombrero: 9,
+    const colorBase = localStorage.getItem("michi_color") || "Naranja";
+    const accesorioBase = localStorage.getItem("michi_accesorio") || "";
+    const claveCompleta = accesorioBase
+      ? `${colorBase}${accesorioBase}`
+      : colorBase;
+
+    const colorMap = {
+      Naranja: 1,
+      Blanco: 2,
+      Negro: 3,
+      BlancoGafas: 4,
+      NegroGafas: 5,
+      NaranjaGafas: 6,
+      NaranjaSombrero: 7,
+      BlancoSombrero: 8,
+      NegroSombrero: 9,
     };
-    this.gatoColor = colorMap[localStorage.getItem("michi_color")] ?? 1;
+    this.gatoColor = colorMap[claveCompleta] ?? 1;
 
     const texturaGato =
       this.gatoColor === 2
@@ -136,7 +163,7 @@ export default class endScene extends Phaser.Scene {
                     : this.gatoColor === 9
                       ? "GatoNegroSombrero"
                       : "GatoNaranjaF";
- 
+
     const sufijo =
       this.gatoColor === 2
         ? "Blanco"
@@ -155,7 +182,7 @@ export default class endScene extends Phaser.Scene {
                     : this.gatoColor === 9
                       ? "NegroSombrero"
                       : "Naranja";
- 
+
     const escala =
       this.gatoColor === 2
         ? 0.9
@@ -175,9 +202,8 @@ export default class endScene extends Phaser.Scene {
                       ? 1.1
                       : 1.6;
 
-
     this.GatoNar = this.physics.add
-      .sprite(700, 600, texturaGato) 
+      .sprite(700, 600, texturaGato)
       .setScale(escala);
 
     // this.GatoNar = this.physics.add
@@ -189,10 +215,10 @@ export default class endScene extends Phaser.Scene {
     // cinematica
     this.GatoNar.setVelocityX(-160);
     this.GatoNar.setFlipX(false);
-    this.GatoNar.anims.play("left_"+ sufijo, true);
+    this.GatoNar.anims.play("left_" + sufijo, true);
     this.physics.add.collider(GatoSentado, this.GatoNar, Sentar, null, this);
 
-     ///Boton Volver al Menu
+    ///Boton Volver al Menu
     this.add.image(730, 30, "Menu").setScale(0.06).setScrollFactor(0);
     //funcion volver al menu
     const Menu = this.add.zone(673, 10, 115, 38);
@@ -200,8 +226,6 @@ export default class endScene extends Phaser.Scene {
     Menu.setInteractive().setScrollFactor(0);
     Menu.once("pointerdown", () => this.scene.start("Menu"));
     // this.add.graphics().lineStyle(2, 0xff0000).strokeRectShape(Menu).setScrollFactor(0);
-
-    
   }
 
   update() {}
