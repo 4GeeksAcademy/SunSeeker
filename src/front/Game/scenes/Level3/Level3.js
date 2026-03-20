@@ -70,41 +70,28 @@ init(data) {
     });
     
   }
-  init(data) {
-  this.previousScore = data.score ?? 0;
-}
 ScoreText = "";
   create() {
-    this.ScoreText = this.add.text(16, 16, "Score: 0", {
-      fontSize: "32px",
-      fill: "#000",
-    });
-    this.ScoreText.setScrollFactor(0);
-    
-
-
     //music
-     CommunicatorMusic.removeAllListeners("change-music-state");
-        CommunicatorMusic.on("change-music-state", (data) => {
-          if (!this.sys || !this.scene.isActive()) return;
+  CommunicatorMusic.removeAllListeners("change-music-state");
+    CommunicatorMusic.on("change-music-state", (data) => {
+    if (!this.sys || !this.scene.isActive()) return;
     
-          if (data.isPlaying) {
-            if (this.physics?.world) this.physics.resume();
+    if (data.isPlaying) {
+    if (this.physics?.world) this.physics.resume();
     
-            if (this.time) this.time.paused = false;
-            if (this.GatoNar?.anims) {
-              this.GatoNar.anims.resume();
-              if (data.bpm) this.GatoNar.anims.timeScale = data.bpm / 120;
-            }
-          } else {
-            if (this.physics?.world) this.physics.pause();
-            if (this.time) this.time.paused = true;
-            if (this.GatoNar?.anims) this.GatoNar.anims.pause();
-          }
-        });
-        CommunicatorMusic.emit("request-play-music"); 
-       
-
+    if (this.time) this.time.paused = false;
+    if (this.GatoNar?.anims) {
+        this.GatoNar.anims.resume();
+    if (data.bpm) this.GatoNar.anims.timeScale = data.bpm / 120;
+    }
+    } else {
+    if (this.physics?.world) this.physics.pause();
+    if (this.time) this.time.paused = true;
+    if (this.GatoNar?.anims) this.GatoNar.anims.pause();
+    }
+    });
+    CommunicatorMusic.emit("request-play-music"); 
 
   Animaciones(this)
   createWalls(this)
@@ -112,18 +99,22 @@ ScoreText = "";
   createPlayer(this)
   createEnemies(this)
   createColliders(this)
-  this.GatoNar.Score = 0;
+
+  this.GatoNar.Score = this.previousScore ?? 0; 
   //puntos
+  
   function PuntosGato(gato, pezTocando) {
       pezTocando.disableBody(true, true);
       this.GatoNar.Score += 25;
-      console.log("Puntos:", this.GatoNar.Score);
       this.ScoreText.setText("Score: " + this.GatoNar.Score);
     }
 
-    this.physics.add.overlap(this.GatoNar, this.peces, PuntosGato, null, this);
+  this.physics.add.overlap(this.GatoNar, this.peces, PuntosGato, null, this);
   //score img
-  this.add.image(115, 34, "ScoreFondo").setScale(0.46).setScrollFactor(0).setDepth(-1)
+  this.add.image(115, 34, "ScoreFondo").setScale(0.46).setScrollFactor(0).setDepth(0)
+   this.ScoreText = this.add
+  .text(16, 16, "Score: " + this.GatoNar.Score, { fontSize: "32px", fill: "#000" })
+  .setScrollFactor(0);
   //score
   this.gametime = 140;
     this.timeTXT = this.add.text(350, 0, this.gametime, {
