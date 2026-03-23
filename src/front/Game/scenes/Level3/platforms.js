@@ -64,4 +64,5 @@ export function createPlatforms(game) {
   //pez izquierda
   createPez(game, 120, game.scale.height - 1500)
   createPez(game, 120, game.scale.height - 2550)
+  createPez(game, 130, game.scale.height - 180)
 }

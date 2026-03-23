@@ -332,6 +332,7 @@ export default class Level2 extends Phaser.Scene {
       { x: 2000, y: 380 },
       { x: 2790, y: 370 },
       { x: 2750, y: 290 },
+      { x: 1000, y: 100 },
     ].forEach(({ x, y }) => peces.create(x, y, "Pez").setScale(0.07));
 
     this.physics.add.overlap(

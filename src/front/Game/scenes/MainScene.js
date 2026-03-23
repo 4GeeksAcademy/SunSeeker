@@ -334,6 +334,8 @@ export default class MainScene extends Phaser.Scene {
     peces.create(265, 550, "Pez").setScale(0.07);
     peces.create(570, 900, "Pez").setScale(0.07);
     peces.create(265, 1150, "Pez").setScale(0.07);
+    peces.create(260, 900, "Pez").setScale(0.07);
+    peces.create(700, 190, "Pez").setScale(0.07);
 
     this.physics.add.overlap(this.GatoNar, peces, PuntosGato, null, this);
 
